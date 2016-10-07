@@ -9,12 +9,15 @@
 /** @constructor */
 function TrackboxMap(def) {
 	this.tileSize = new google.maps.Size(256, 256);
+	this.maxZoom = 21;
+	this.name = def.name;
+	this.alt = '';
+
 	this._def = def;
 
 	this._tileBounds = new google.maps.LatLngBounds(
 		new google.maps.LatLng(def.bounds[0][0], def.bounds[0][1]),
 		new google.maps.LatLng(def.bounds[1][0], def.bounds[1][1]));
-	console.log(this);
 }
 
 TrackboxMap.prototype.addTo = function(map) {
@@ -22,18 +25,20 @@ TrackboxMap.prototype.addTo = function(map) {
 
 	map.fitBounds(this._tileBounds);
 
+	map.mapTypes.set(this._def.name, this);
+	//map.setMapTypeId(this._def.name);
 	map.overlayMapTypes.insertAt(0, this);
 };
 
 
 TrackboxMap.prototype.getTile = function(coord, zoom, owner) {
 	var tile = owner.createElement('img');
+	tile.alt = '';
 
 	var tileBounds = this._tileCoordsToBounds(coord, zoom);
 
 	if (tileBounds.intersects(this._tileBounds)){
 		if (zoom >= this._def.zoom.min && zoom <= this._def.zoom.max){
-			tile.alt = '';
 			tile.src = this._getTileUrl(coord, zoom);
 			tile.style.width = this.tileSize.width + 'px';
 			tile.style.height = this.tileSize.height + 'px';
@@ -65,4 +70,5 @@ TrackboxMap.prototype._tileCoordsToBounds = function(coord, zoom) {
 
 	return new google.maps.LatLngBounds(sw, ne);
 };
+
 
