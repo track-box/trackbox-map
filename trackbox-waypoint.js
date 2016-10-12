@@ -33,14 +33,23 @@ TrackboxWaypoint.prototype.showWaypoints = function() {
 	Object.keys(waypoints).forEach(function(key){
 		var marker = new google.maps.Marker({
 			position: new google.maps.LatLng(waypoints[key].lat, waypoints[key].lon),
+			icon: {
+				path: google.maps.SymbolPath.CIRCLE,
+				scale: 3,
+				strokeWeight: 2,
+				strokeColor: '#e91e63' // material pink
+			},
+			label: key,
+			title: key
 		});
 		markers.push(marker);
-
 	});
 		
 	this._markerCluster = new MarkerClusterer(this.map, markers, {
-		maxZoom: 12,
+		maxZoom: 11,
+		minZoom: 11,
 		gridSize: 128
 	});
+
 }
 
