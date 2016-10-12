@@ -28,6 +28,7 @@ TrackboxMap.prototype.addTo = function(map) {
 	map.fitBounds(this._tileBounds);
 
 	this._setOverlayControl();
+	this._showCurrentPosition();
 
 	map.mapTypes.set(this._def.name, this);
 	//map.setMapTypeId(this._def.name);
@@ -156,5 +157,28 @@ TrackboxMap.prototype._toggle = function() {
 		this.map.overlayMapTypes.insertAt(0, this);
 	}
 	this._show = !this._show;
+};
+
+
+TrackboxMap.prototype._showCurrentPosition = function(pos) {
+	//var position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+	var position = new google.maps.LatLng(39, 141);
+
+	if (!this._currentPosMarker) {
+		this._currentPosMarker = new google.maps.Marker({
+			position: position,
+			map: this.map,
+			icon: {
+				path: google.maps.SymbolPath.CIRCLE,
+				scale: 6,
+				fillOpacity: 1,
+				fillColor: '#1faee3',
+				strokeWeight: 1,
+				strokeColor: '#4591c5'
+			}
+		});
+
+		this.map.panTo(position);
+	}
 };
 
