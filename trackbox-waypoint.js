@@ -42,7 +42,9 @@ TrackboxWaypoint.prototype.showWaypoints = function() {
 			label: key,
 			title: key
 		});
-		markers.push(marker);
+
+		var pos = new google.maps.LatLng(waypoints[key].lat, waypoints[key].lon);
+		markers.push(new TrackboxGoal(key, pos, self.map));
 	});
 		
 	this._markerCluster = new MarkerClusterer(this.map, markers, {
@@ -52,4 +54,57 @@ TrackboxWaypoint.prototype.showWaypoints = function() {
 	});
 
 }
+
+
+
+TrackboxGoal.prototype = new google.maps.OverlayView();
+
+function TrackboxGoal(name, pos, map) {
+	this._name = name;
+	this._pos = pos;
+	this.map = map;
+	this.setMap(map);
+};
+
+TrackboxGoal.prototype.getPosition = function() {
+	return this._pos;
+};
+
+TrackboxGoal.prototype.getMap = function() {
+	return this.map;
+};
+
+
+TrackboxGoal.prototype.onAdd = function() {
+	this._div = document.createElement('div');
+
+	this._div.style.position = 'absolute';
+	this._div.style.width = '22px';
+	this._div.style.height = '22px';
+
+	this._div.innerHTML = '<svg width="22px" height="11px">' +
+		'<circle cx="11" cy="5" r="3" stroke="#e91e63" stroke-width="2" fill="none" />' +
+		'</svg>' +
+		'<div style="width:22px; font-size:12px; text-align:center; line-height:1;">' + this._name + '</div>';
+
+	var panes = this.getPanes();
+	panes.overlayMouseTarget.appendChild(this._div);
+};
+
+TrackboxGoal.prototype.onRemove = function() {
+	if (this._div && this._div.parentNode) {
+		this._div.parentNode.removeChild(this._div);
+		this._div = null;
+	}
+};
+
+TrackboxGoal.prototype.draw = function() {
+	var pos = this._getPosFromLatLng(this._pos);
+	this._div.style.left = (pos.x - 11) + 'px';
+	this._div.style.top = (pos.y - 5) + 'px';
+};
+
+TrackboxGoal.prototype._getPosFromLatLng = function(latlng) {
+	return this.getProjection().fromLatLngToDivPixel(latlng);
+};
 
