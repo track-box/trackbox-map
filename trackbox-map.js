@@ -28,7 +28,6 @@ TrackboxMap.prototype.addTo = function(map) {
 	map.fitBounds(this._tileBounds);
 
 	this._setOverlayControl();
-	this._showCurrentPosition();
 
 	map.mapTypes.set(this._def.name, this);
 	//map.setMapTypeId(this._def.name);
@@ -156,11 +155,38 @@ TrackboxMap.prototype._toggle = function() {
 	this._show = !this._show;
 };
 
+TrackboxMap.prototype.showCurrentPosition = function() {
+	if (this._currentPosition){
+		console.log(this);
+		this._showCurrentPosition();
+
+	}else if (!this._watchId){
+		var self = this;
+		this._watchId = navigator.geolocation.watchPosition(
+			function(pos) {
+				self._showCurrentPosition(pos);
+			},
+			function(err) {
+				alert(err.message);
+			},
+			{
+				enableHighAccuracy: false,
+				timeout: 10000,
+				maximumAge: 0
+			}
+		);
+	}
+};
 
 TrackboxMap.prototype._showCurrentPosition = function(pos) {
-	//var position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-	var position = new google.maps.LatLng(39, 141);
+	if (!pos){
+		if (this._currentPosition) this.map.panTo(this._currentPosition);
+		return;
+	}
 
+	var position = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+	this._currentPosition = position;
+	
 	if (!this._currentPosMarker) {
 		this._currentPosMarker = new google.maps.Marker({
 			position: position,
@@ -176,6 +202,9 @@ TrackboxMap.prototype._showCurrentPosition = function(pos) {
 		});
 
 		this.map.panTo(position);
+
+	}else{
+		this._currentPosMarker.setPosition(position);
 	}
 };
 
