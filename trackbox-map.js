@@ -126,18 +126,15 @@ TrackboxMap.prototype._setOverlayControl = function() {
 	controlUI.style.cursor = 'pointer';
 	controlUI.style.marginTop = '10px';
 	controlUI.style.marginLeft = '-11px';
-	controlUI.style.padding = '7px';
-	controlUI.style.height = '11px';
+	controlUI.style.padding = '6px';
 	controlUI.style.textAlign = 'center';
 	controlUI.style.color = 'rgb(25,25,25)';
 	controlUI.style.fontSize = '11px';
 	controlUI.style.position = 'relative';
+	controlUI.style.display = 'block';
 	controlUI.innerHTML = this._def.name;
 	
-	if (this._retina){
-	   	controlUI.style.padding = '12px 7px';
-		controlUI.style.height = '12px';
-	}
+	if (this._retina) controlUI.style.padding = '9px 6px';
 
 	div.appendChild(controlUI);
 
