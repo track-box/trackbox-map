@@ -27,9 +27,12 @@ TrackboxMap.prototype.addTo = function(map) {
 
 	map.fitBounds(this._tileBounds);
 
+	this._setOverlayControl();
+
 	map.mapTypes.set(this._def.name, this);
 	//map.setMapTypeId(this._def.name);
 	map.overlayMapTypes.insertAt(0, this);
+	this._show = true;
 };
 
 
@@ -109,4 +112,49 @@ TrackboxMap.prototype._tileCoordsToBounds = function(coord, zoom) {
 	return new google.maps.LatLngBounds(sw, ne);
 };
 
+
+TrackboxMap.prototype._setOverlayControl = function() {
+	var div = document.createElement('div');
+	div.index = 1;
+
+	var controlUI = document.createElement('div');
+	controlUI.style.backgroundColor = '#fff';
+	controlUI.style.border = '2px solid #fff';
+	controlUI.style.borderRadius = '2px';
+	controlUI.style.boxShadow = '0 1px 4px -1px rgba(0,0,0,.3)';
+	controlUI.style.cursor = 'pointer';
+	controlUI.style.marginTop = '10px';
+	controlUI.style.marginLeft = '-11px';
+	controlUI.style.padding = '7px';
+	controlUI.style.height = '11px';
+	controlUI.style.textAlign = 'center';
+	controlUI.style.color = 'rgb(25,25,25)';
+	controlUI.style.fontSize = '11px';
+	controlUI.style.position = 'relative';
+	controlUI.innerHTML = this._def.name;
+	
+	if (this._retina){
+	   	controlUI.style.padding = '12px 7px';
+		controlUI.style.height = '12px';
+	}
+
+	div.appendChild(controlUI);
+
+	var self = this;
+	controlUI.addEventListener('click', function() {
+		self._toggle();
+	});
+
+	this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(div);
+};
+
+
+TrackboxMap.prototype._toggle = function() {
+	if (this._show){
+		this.map.overlayMapTypes.removeAt(0);
+	}else{
+		this.map.overlayMapTypes.insertAt(0, this);
+	}
+	this._show = !this._show;
+};
 
