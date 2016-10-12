@@ -24,6 +24,7 @@
 	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 	<script src="//maps.google.com/maps/api/js?v=3&key=AIzaSyChuaneGgTfTzlwUdqAGw7ns6cJTIQEbGg"></script>
+	<script src="../trackbox-waypoint.js"></script>
 	<script src="../trackbox-map.js"></script>
 	<script>
 	$(function(){
@@ -39,7 +40,10 @@
 			name: "Ichinoseki2016",
 			bounds: [[38.6130359862, 140.8694187], [39.1999306616, 141.516805776]],
 			zoom: { min: 5, max: 15 },
-			url: "https://d128cdxvkxdfwx.cloudfront.net/map/ichinoseki2016"
+			proj: "utm",
+			zone: "54",
+			url: "https://d128cdxvkxdfwx.cloudfront.net/map/ichinoseki2016",
+			waypoint_url: "waypoint.json"
 		};
 		var trackboxMap = new TrackboxMap(ichinoseki2016);
 		trackboxMap.addTo(map);

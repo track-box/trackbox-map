@@ -33,6 +33,8 @@ TrackboxMap.prototype.addTo = function(map) {
 	//map.setMapTypeId(this._def.name);
 	map.overlayMapTypes.insertAt(0, this);
 	this._show = true;
+
+	this._waypoint = new TrackboxWaypoint(this._def.waypoint_url, map);
 };
 
 
