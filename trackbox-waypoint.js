@@ -11,7 +11,7 @@ function TrackboxWaypoint(url, map) {
 		self.data = data;
 		self.showWaypoints();
 	});
-}
+};
 
 
 TrackboxWaypoint.prototype._loadJSON = function(url, callback) {
@@ -22,7 +22,7 @@ TrackboxWaypoint.prototype._loadJSON = function(url, callback) {
 		callback(data);
 	};
 	xhr.send(null);
-}
+};
 
 
 TrackboxWaypoint.prototype.showWaypoints = function() {
@@ -52,8 +52,13 @@ TrackboxWaypoint.prototype.showWaypoints = function() {
 		minZoom: 15,
 		gridSize: 128
 	});
+};
 
-}
+TrackboxWaypoint.prototype.showZoomgt = function(zoom) {
+	this._markerCluster.setMaxZoom(zoom);
+	this._markerCluster.setMinZoom(zoom);
+	this._markerCluster.repaint();
+};
 
 
 
@@ -82,7 +87,7 @@ TrackboxGoal.prototype.onAdd = function() {
 	this._div.style.width = '22px';
 	this._div.style.height = '22px';
 
-	this._div.innerHTML = '<svg width="22px" height="11px">' +
+	this._div.innerHTML = '<svg width="22px" height="10px">' +
 		'<circle cx="11" cy="5" r="3" stroke="#e91e63" stroke-width="2" fill="none" />' +
 		'</svg>' +
 		'<div style="width:22px; font-size:12px; text-align:center; line-height:1;">' + this._name + '</div>';
