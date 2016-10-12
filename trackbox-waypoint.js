@@ -46,8 +46,8 @@ TrackboxWaypoint.prototype.showWaypoints = function() {
 	});
 		
 	this._markerCluster = new MarkerClusterer(this.map, markers, {
-		maxZoom: 11,
-		minZoom: 11,
+		maxZoom: 15,
+		minZoom: 15,
 		gridSize: 128
 	});
 

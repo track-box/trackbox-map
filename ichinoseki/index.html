@@ -31,6 +31,8 @@
 	$(function(){
 		var map = new google.maps.Map(document.getElementById('map'), {
 			mapTypeId: google.maps.MapTypeId.HYBRID,
+			center: new google.maps.LatLng(38.934005, 141.158267),
+			zoom: 12,
 			zoomControl: false,
 			streetViewControlOptions: {
 				position: google.maps.ControlPosition.TOP_RIGHT

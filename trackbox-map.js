@@ -25,7 +25,7 @@ function TrackboxMap(def) {
 TrackboxMap.prototype.addTo = function(map) {
 	this.map = map;
 
-	map.fitBounds(this._tileBounds);
+	//map.fitBounds(this._tileBounds);
 
 	this._setOverlayControl();
 
