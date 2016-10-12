@@ -27,7 +27,7 @@ def readWaypointTextFile(file):
             p1 = Proj(proj='utm', zone=zone, datum='WGS84')
             p2 = Proj(proj='latlong', datum='WGS84')
 
-            lat, lon = transform(p1, p2, row[4], row[5])
+            lon, lat = transform(p1, p2, row[4], row[5])
 
             print row[2], lat, lon
             waypoints[row[2]] = { 'lat':lat, 'lon':lon }
