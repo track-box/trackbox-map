@@ -210,5 +210,9 @@ TrackboxMap.prototype._showCurrentPosition = function(pos) {
 	}else{
 		this._currentPosMarker.setPosition(position);
 	}
+
+	if (this._goals){
+		this._goals.updatePosition(position);
+	}
 };
 

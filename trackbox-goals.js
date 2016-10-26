@@ -24,7 +24,6 @@ function TrackboxGoals(map, trackboxMap) {
 }
 
 TrackboxGoals.prototype.addGoal = function(x) {
-	console.log(x);
 	if (!x){
 		return;
 	}

@@ -118,11 +118,9 @@
 		trackboxMap.addTo(map);
 
 		var trackboxGoals = new TrackboxGoals(map, trackboxMap);
+		trackboxMap._goals = trackboxGoals;
 
 		$("#location-button").click(function(){
-			trackboxGoals.addGoal("16008000");
-			trackboxGoals.updatePosition(new google.maps.LatLng(33.252814, 130.245334));
-			return false;
 			trackboxMap.showCurrentPosition();
 		});
 		$("#goal-button").click(function(){
