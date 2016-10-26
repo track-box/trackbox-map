@@ -107,6 +107,8 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 		table: row1,
 		sheet: row2	
 	};
+
+	this.updatePosition();
 };
 
 
@@ -116,7 +118,28 @@ TrackboxGoals.prototype._showGoal = function(pos) {
 };
 
 TrackboxGoals.prototype.updatePosition = function(position) {
+	if (position){
+		this._lastPosition = position;
 
+		for (var key in this._goals){
+			var goal = this._goals[key];
+
+			var distance = google.maps.geometry.spherical.computeDistanceBetween(position, goal.pos);
+			var heading = google.maps.geometry.spherical.computeHeading(position, goal.pos);
+
+			if (heading < 0) heading += 360;
+
+			var d = Math.round(distance) + "m";
+			var head = Math.round(heading) + "°";
+
+			goal.table.cells[1].innerHTML = d;
+			goal.sheet.cells[1].innerHTML = d;
+			goal.table.cells[2].innerHTML = head;
+			goal.sheet.cells[2].innerHTML = head;
+		}
+	}else if (this._lastPosition){
+		this.updatePosition(this._lastPosition);
+	}
 };
 
 
