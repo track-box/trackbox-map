@@ -71,6 +71,21 @@ TrackboxGoals.prototype._getDigitLatLon = function(digit) {
 	return { lat: pos[1], lon: pos[0] };
 };
 
+TrackboxGoals.prototype._getDigit = function(lat, lon) {
+	var utm = "+proj=utm +zone=" + this._utm.zone;
+	var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+
+	var pos = proj4(wgs84, utm, [lon, lat]);
+
+	var x = Math.floor(pos[0] / 10);
+	var y = Math.floor(pos[1] / 10);
+
+	var dx = x % 10000;
+	var dy = y % 10000;
+
+	return "" + dx + dy;
+};
+
 TrackboxGoals.prototype._addPoint = function(name, lat, lon, noshow) {
 	this._goals[name] = true;
 	this._updateHash();
