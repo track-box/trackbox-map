@@ -1,14 +1,21 @@
 /*
  * TrackboxGoals - trackbox goals management class
  *
- *  use materialize, google maps
+ *  use 
+ *  	materialize
+ *  	google maps
+ *  	proj4
  *
  */
 
 /** @constructor */
-function TrackboxGoals(map, waypoints) {
+function TrackboxGoals(map, trackboxMap) {
 	this.map = map;
-	this._waypoint = waypoints;
+	this._waypoint = trackboxMap._waypoint;
+
+	this._utm = trackboxMap._def.utm;
+	this._utm.xbase = Math.floor(this._utm.xmax / 100000) * 100000;
+	this._utm.ybase = Math.floor(this._utm.ymax / 100000) * 100000;
 
 	this._goals = {};
 	
@@ -35,12 +42,31 @@ TrackboxGoals.prototype.addGoal = function(x) {
 			Materialize.toast("not found", 1000);
 		}
 	}else if (x.length == 8){
+		var latlon = this._getDigitLatLon(x);
+		this._addPoint(x, latlon.lat, latlon.lon);
 
 	}else{
 		Materialize.toast("error!", 1000);
 	}
 };
 
+TrackboxGoals.prototype._getDigitLatLon = function(digit) {
+	var dx = parseInt(digit.substr(0, 4));
+	var dy = parseInt(digit.substr(4, 4));
+
+	var x = this._utm.xbase + dx * 10;
+	var y = this._utm.ybase + dy * 10;
+
+	if (x > this._utm.xmax) x -= 1000000;
+	if (y > this._utm.ymax) y -= 1000000;
+
+	var utm = "+proj=utm +zone=" + this._utm.zone;
+	var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+
+	var pos = proj4(utm, wgs84, [x, y]);
+
+	return { lat: pos[1], lon: pos[0] };
+};
 
 TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 	this._goals[name] = true;

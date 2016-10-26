@@ -75,6 +75,7 @@
 	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 	<script src="//maps.google.com/maps/api/js?v=3&key=AIzaSyChuaneGgTfTzlwUdqAGw7ns6cJTIQEbGg"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
 	<script src="../lib/markerclusterer.js"></script>
 	<script src="../trackbox-waypoint.js"></script>
 	<script src="../trackbox-goals.js"></script>
@@ -94,18 +95,23 @@
 			name: "Saga2016",
 			bounds: [[33.07754498441214, 129.95346411545185], [33.41060691858563, 130.49726791761674]],
 			zoom: { min: 5, max: 15 },
-			proj: "utm",
-			zone: "54",
+			utm: {
+				zone: 52,
+				xmin: 588987,
+				xmax: 639232,
+				ymin: 3660873,
+				ymax: 3697218
+			},
 			url: "https://d128cdxvkxdfwx.cloudfront.net/map/saga2016",
 			waypoint_url: "waypoint.json"
 		};
 		var trackboxMap = new TrackboxMap(saga2016);
 		trackboxMap.addTo(map);
 
-		var trackboxGoals = new TrackboxGoals(map, trackboxMap._waypoint);
+		var trackboxGoals = new TrackboxGoals(map, trackboxMap);
 
 		$("#location-button").click(function(){
-			trackboxGoals.addGoal("302");
+			trackboxGoals.addGoal("16008000");
 			return false;
 			trackboxMap.showCurrentPosition();
 		});
