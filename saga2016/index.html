@@ -9,16 +9,41 @@
 	<style>
 		body { margin:0; padding:0; }
 		#map { position:absolute; top:0; bottom:0; width:100%;  }
+		#goal-button { position:absolute; bottom:85px; right:10px; }
 		#location-button { position:absolute; bottom:20px; right:10px; }
+		#goal-modal-row { margin-bottom:0; }
+		#goal-modal-content { padding-bottom:0; }
+		#goal-modal-add { margin-right:10px; margin-bottom:10px; }
 	</style>
 </head>
 <body>
 	<div id="map"></div>
 
+	<div id="goal-button">
+		<a class="btn-floating btn-large waves-effect waves-light red">
+			<i class="material-icons">location_on</i>
+		</a>
+	</div>
 	<div id="location-button">
 		<a class="btn-floating btn-large waves-effect waves-light blue">
 			<i class="material-icons">my_location</i>
 		</a>
+	</div>
+
+	<div id="goal-modal" class="modal">
+		<div id="goal-modal-content" class="modal-content">
+			<form class="col s8">
+				<div id="goal-modal-row" class="row">
+					<div class="input-field col s12">
+						<input id="goal-number" type="tel" class="validate" placeholder="302 or 16008000">
+						<label for="goal-number">Goal number or Digit</label>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a id="goal-modal-add" class="waves-effect waves-light btn red">add</a>
+		</div>
 	</div>
 
 	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -52,6 +77,9 @@
 
 		$("#location-button").click(function(){
 			trackboxMap.showCurrentPosition();
+		});
+		$("#goal-button").click(function(){
+			$("#goal-modal").openModal();
 		});
 	});
 	</script>
