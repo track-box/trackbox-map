@@ -77,8 +77,7 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 		map: this.map
 	});
 	
-	this.map.setZoom(14);
-	this.map.panTo(pos);
+	this._showGoal(pos);
 
 	var row1 = this._table.insertRow(-1);
 	row1.insertCell(-1).innerHTML = name;
@@ -94,6 +93,7 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 
 	var self = this;
 	del.onclick = function () { self.deleteGoal(name); };
+	row2.onclick = function () { self._showGoal(pos); };
 
 
 	this._goals[name] = {
@@ -105,6 +105,10 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 };
 
 
+TrackboxGoals.prototype._showGoal = function(pos) {
+	this.map.setZoom(14);
+	this.map.panTo(pos);
+};
 
 TrackboxGoals.prototype.updatePosition = function(position) {
 
