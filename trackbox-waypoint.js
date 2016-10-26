@@ -99,9 +99,10 @@ TrackboxGoal.prototype.onAdd = function() {
 	var lat = this._pos.lat();
 	var lon = this._pos.lng();
 	this._div.onclick = function () {
-		$("#marker-info-name").text(name);
-		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
-		$("#marker-info").openModal();	
+		$("#waypoint-info-name").text(name);
+		$("#waypoint-info-add").attr("name", name);
+		$("#waypoint-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
+		$("#waypoint-info").openModal();	
 	};
 
 	var panes = this.getPanes();
