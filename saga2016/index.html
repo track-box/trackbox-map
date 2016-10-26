@@ -17,6 +17,8 @@
 		#goal-modal-add { margin-right:10px; margin-bottom:10px; }
 		#goal-table { position:absolute; top:0; right:0; width:160px; z-index:100; font-size:10px; background:#fff; margin:0; }
 		#goal-table td { padding: 2px 5px; }
+		#marker-info-href { position:absolute; right: 15px; bottom: 15px; };
+
 	</style>
 </head>
 <body>
@@ -69,6 +71,13 @@
 				<tbody>
 				</tbody>
 			</table>
+		</div>
+	</div>
+	
+	<div id="marker-info" class="modal bottom-sheet">
+		<div class="modal-content" style="padding: 10px;">
+			<p id="marker-info-name"></p>
+			<a id="marker-info-href" class="btn-floating waves-effect waves-light blue darken-4 z-depth-0"><i class="material-icons" href="">map</i></a>
 		</div>
 	</div>
 

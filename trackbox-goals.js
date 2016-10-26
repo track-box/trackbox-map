@@ -94,6 +94,11 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 	var self = this;
 	del.onclick = function () { self.deleteGoal(name); };
 	row2.onclick = function () { self._showGoal(pos); };
+	marker.addListener('click', function() {
+		$("#marker-info-name").text(name);
+		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
+		$("#marker-info").openModal();
+	});
 
 
 	this._goals[name] = {
