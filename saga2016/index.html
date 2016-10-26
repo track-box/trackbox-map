@@ -149,8 +149,9 @@
 			return false;
 		});
 		$("#goal-table").click(function(){
+			var len = Object.keys(trackboxGoals._goals).length;
 			$("#goal-sheet").css({
-				"max-height": $("#goal-sheet").height() - 56
+				"max-height": 130 + 57 * len
 			});
 			$("#goal-sheet").openModal();
 		});
