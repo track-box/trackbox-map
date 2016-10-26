@@ -9,6 +9,9 @@ function TrackboxWaypoint(url, map) {
 	var self = this;
 	this._loadJSON(url, function(data){
 		self.data = data;
+		if (self._onloadForGoals){
+			self._onloadForGoals();
+		}
 		self.showWaypoints();
 	});
 };

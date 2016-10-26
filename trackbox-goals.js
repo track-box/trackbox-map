@@ -21,9 +21,13 @@ function TrackboxGoals(map, trackboxMap) {
 	
 	this._table = document.getElementById("goal-table-table");
 	this._sheet = document.getElementById("goal-sheet-table");
+
+	if (window.location.hash){
+		this._initGoals(window.location.hash);
+	}
 }
 
-TrackboxGoals.prototype.addGoal = function(x) {
+TrackboxGoals.prototype.addGoal = function(x, noshow) {
 	if (!x){
 		return;
 	}
@@ -35,14 +39,14 @@ TrackboxGoals.prototype.addGoal = function(x) {
 	if (x.length == 3){
 		if (this._waypoint.data.waypoints[x]){
 			var w = this._waypoint.data.waypoints[x];
-			this._addPoint(x, w.lat, w.lon);
+			this._addPoint(x, w.lat, w.lon, noshow);
 
 		}else{
 			Materialize.toast("not found", 1000);
 		}
 	}else if (x.length == 8){
 		var latlon = this._getDigitLatLon(x);
-		this._addPoint(x, latlon.lat, latlon.lon);
+		this._addPoint(x, latlon.lat, latlon.lon, noshow);
 
 	}else{
 		Materialize.toast("error!", 1000);
@@ -67,8 +71,9 @@ TrackboxGoals.prototype._getDigitLatLon = function(digit) {
 	return { lat: pos[1], lon: pos[0] };
 };
 
-TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
+TrackboxGoals.prototype._addPoint = function(name, lat, lon, noshow) {
 	this._goals[name] = true;
+	window.location.hash = Object.keys(this._goals).join(",");
 
 	var pos = new google.maps.LatLng(lat, lon);
 	var marker = new google.maps.Marker({
@@ -76,7 +81,7 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 		map: this.map
 	});
 	
-	this._showGoal(pos);
+	if (!noshow) this._showGoal(pos);
 
 	var row1 = this._table.insertRow(-1);
 	row1.insertCell(-1).innerHTML = name;
@@ -94,9 +99,7 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 	del.onclick = function () { self.deleteGoal(name); };
 	row2.onclick = function () { self._showGoal(pos); };
 	marker.addListener('click', function() {
-		$("#marker-info-name").text(name);
-		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
-		$("#marker-info").openModal();
+		self._showMarkerInfo(name);
 	});
 
 
@@ -110,6 +113,17 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon) {
 	this.updatePosition();
 };
 
+
+TrackboxGoals.prototype._showMarkerInfo = function(name) {
+	if (this._goals[name]){
+		var goal = this._goals[name];
+		var lat = goal.pos.lat();
+		var lon = goal.pos.lng();
+		$("#marker-info-name").text(name);
+		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
+		$("#marker-info").openModal();
+	}
+};
 
 TrackboxGoals.prototype._showGoal = function(pos) {
 	this.map.setZoom(14);
@@ -152,5 +166,22 @@ TrackboxGoals.prototype.deleteGoal = function(name) {
 
 		delete this._goals[name];
 	}
+};
+
+TrackboxGoals.prototype._initGoals = function(hash) {
+	var goals = hash.substr(1).split(",");
+	var self = this;
+	this._waypoint._onloadForGoals = function (){
+		
+		if (goals.length > 1){
+			for (var i in goals){
+				self.addGoal(goals[i], true);
+			}
+
+		}else{
+			self.addGoal(goals[0]);
+			self._showMarkerInfo(goals[0]);
+		}
+	};
 };
 
