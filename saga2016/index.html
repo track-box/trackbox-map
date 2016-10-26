@@ -4,6 +4,7 @@
 	<title></title>
 	<meta charset="utf-8" />
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<meta name="format-detection" content="telephone=no">
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"  media="screen,projection"/>
 	<style>
@@ -14,6 +15,8 @@
 		#goal-modal-row { margin-bottom:0; }
 		#goal-modal-content { padding-bottom:0; }
 		#goal-modal-add { margin-right:10px; margin-bottom:10px; }
+		#goal-table { position:absolute; top:0; right:0; width:160px; z-index:100; font-size:10px; background:#fff; margin:0; }
+		#goal-table td { padding: 2px 5px; }
 	</style>
 </head>
 <body>
@@ -29,13 +32,20 @@
 			<i class="material-icons">my_location</i>
 		</a>
 	</div>
+	
+	<div id="goal-table" class="z-depth-1">
+		<table>
+			<tr><td>302</td><td>222m</td><td>121°</td></tr>
+			<tr><td>1600800</td><td>222m</td><td>121°</td></tr>
+		</table>
+	</div>
 
 	<div id="goal-modal" class="modal">
 		<div id="goal-modal-content" class="modal-content">
 			<form class="col s8">
 				<div id="goal-modal-row" class="row">
 					<div class="input-field col s12">
-						<input id="goal-number" type="tel" class="validate" placeholder="302 or 16008000">
+						<input id="goal-number" type="tel" placeholder="302 or 16008000">
 						<label for="goal-number">Goal number or Digit</label>
 					</div>
 				</div>
@@ -43,6 +53,26 @@
 		</div>
 		<div class="modal-footer">
 			<a id="goal-modal-add" class="waves-effect waves-light btn red">add</a>
+		</div>
+	</div>
+
+	<div id="goal-sheet" class="modal bottom-sheet">
+		<div class="modal-content">
+			<h5>Goals</h5>
+			<table class="bordered highlight">
+				<thead>
+					<tr>
+						<th>Number</th>
+						<th>Distanse</th>
+						<th>Direction</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>302</td><td>222m</td><td>121°</td><td><i class="material-icons tiny">clear</i></td></tr>
+					<tr><td>1600800</td><td>222m</td><td>121°</td></tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 
@@ -80,6 +110,12 @@
 		});
 		$("#goal-button").click(function(){
 			$("#goal-modal").openModal();
+		});
+		$("#goal-modal-add").click(function(){
+			$("#goal-modal").closeModal();
+		});
+		$("#goal-table").click(function(){
+			$("#goal-sheet").openModal();
 		});
 	});
 	</script>
