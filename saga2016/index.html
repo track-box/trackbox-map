@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"  media="screen,projection"/>
+	<style>
+		body { margin:0; padding:0; }
+		#map { position:absolute; top:0; bottom:0; width:100%;  }
+		#location-button { position:absolute; bottom:20px; right:10px; }
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+
+	<div id="location-button">
+		<a class="btn-floating btn-large waves-effect waves-light blue">
+			<i class="material-icons">my_location</i>
+		</a>
+	</div>
+
+	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+	<script src="//maps.google.com/maps/api/js?v=3&key=AIzaSyChuaneGgTfTzlwUdqAGw7ns6cJTIQEbGg"></script>
+	<script src="../lib/markerclusterer.js"></script>
+	<script src="../trackbox-waypoint.js"></script>
+	<script src="../trackbox-map.js"></script>
+	<script>
+	$(function(){
+		var map = new google.maps.Map(document.getElementById('map'), {
+			mapTypeId: google.maps.MapTypeId.HYBRID,
+			center: new google.maps.LatLng(33.252814, 130.245334),
+			zoom: 12,
+			mapTypeControl: false,
+			zoomControl: false,
+			streetViewControl: false
+		});
+
+		var saga2016 = {
+			name: "Saga2016",
+			bounds: [[33.07754498441214, 129.95346411545185], [33.41060691858563, 130.49726791761674]],
+			zoom: { min: 5, max: 15 },
+			proj: "utm",
+			zone: "54",
+			url: "https://d128cdxvkxdfwx.cloudfront.net/map/saga2016",
+			waypoint_url: "waypoint.json"
+		};
+		var trackboxMap = new TrackboxMap(saga2016);
+		trackboxMap.addTo(map);
+
+		$("#location-button").click(function(){
+			trackboxMap.showCurrentPosition();
+		});
+	});
+	</script>
+</body>
+</html>
