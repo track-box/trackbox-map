@@ -169,6 +169,12 @@ TrackboxGoals.prototype.deleteGoal = function(name) {
 	}
 };
 
+TrackboxGoals.prototype.reset = function() {
+	for (var key in this._goals){
+		this.deleteGoal(key);
+	}
+};
+
 
 TrackboxGoals.prototype._updateHash = function() {
 	window.location.hash = Object.keys(this._goals).join(",");

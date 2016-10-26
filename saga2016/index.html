@@ -72,6 +72,9 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="modal-footer">
+			<a id="goal-reset" class="waves-effect waves-light btn red accent-3">reset</a>
+		</div>
 	</div>
 	
 	<div id="marker-info" class="modal bottom-sheet">
@@ -138,7 +141,13 @@
 			return false;
 		});
 		$("#goal-table").click(function(){
+			$("#goal-sheet").css({
+				"max-height": $("#goal-sheet").height() - 56
+			});
 			$("#goal-sheet").openModal();
+		});
+		$("#goal-reset").click(function(){
+			trackboxGoals.reset();
 		});
 		
 	});
