@@ -92,6 +92,15 @@ TrackboxGoal.prototype.onAdd = function() {
 		'</svg>' +
 		'<div style="width:22px; font-size:12px; text-align:center; line-height:1;">' + this._name + '</div>';
 
+	var name = this._name;
+	var lat = this._pos.lat();
+	var lon = this._pos.lng();
+	this._div.onclick = function () {
+		$("#marker-info-name").text(name);
+		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
+		$("#marker-info").openModal();	
+	};
+
 	var panes = this.getPanes();
 	panes.overlayMouseTarget.appendChild(this._div);
 };
