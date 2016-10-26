@@ -34,15 +34,13 @@
 	</div>
 	
 	<div id="goal-table" class="z-depth-1">
-		<table>
-			<tr><td>302</td><td>222m</td><td>121°</td></tr>
-			<tr><td>1600800</td><td>222m</td><td>121°</td></tr>
+		<table id="goal-table-table">
 		</table>
 	</div>
 
 	<div id="goal-modal" class="modal">
 		<div id="goal-modal-content" class="modal-content">
-			<form class="col s8">
+			<form id="goal-modal-form" class="col s8">
 				<div id="goal-modal-row" class="row">
 					<div class="input-field col s12">
 						<input id="goal-number" type="tel" placeholder="302 or 16008000">
@@ -59,7 +57,7 @@
 	<div id="goal-sheet" class="modal bottom-sheet">
 		<div class="modal-content">
 			<h5>Goals</h5>
-			<table class="bordered highlight">
+			<table id="goal-sheet-table" class="bordered highlight">
 				<thead>
 					<tr>
 						<th>Number</th>
@@ -69,8 +67,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr><td>302</td><td>222m</td><td>121°</td><td><i class="material-icons tiny">clear</i></td></tr>
-					<tr><td>1600800</td><td>222m</td><td>121°</td></tr>
 				</tbody>
 			</table>
 		</div>
@@ -81,6 +77,7 @@
 	<script src="//maps.google.com/maps/api/js?v=3&key=AIzaSyChuaneGgTfTzlwUdqAGw7ns6cJTIQEbGg"></script>
 	<script src="../lib/markerclusterer.js"></script>
 	<script src="../trackbox-waypoint.js"></script>
+	<script src="../trackbox-goals.js"></script>
 	<script src="../trackbox-map.js"></script>
 	<script>
 	$(function(){
@@ -105,18 +102,30 @@
 		var trackboxMap = new TrackboxMap(saga2016);
 		trackboxMap.addTo(map);
 
+		var trackboxGoals = new TrackboxGoals(map, trackboxMap._waypoint);
+
 		$("#location-button").click(function(){
+			trackboxGoals.addGoal("302");
+			return false;
 			trackboxMap.showCurrentPosition();
 		});
 		$("#goal-button").click(function(){
 			$("#goal-modal").openModal();
 		});
 		$("#goal-modal-add").click(function(){
+			trackboxGoals.addGoal($("#goal-number").val());
 			$("#goal-modal").closeModal();
+		});
+		$("#goal-modal-form").submit(function(e){
+			e.preventDefault();
+			trackboxGoals.addGoal($("#goal-number").val());
+			$("#goal-modal").closeModal();
+			return false;
 		});
 		$("#goal-table").click(function(){
 			$("#goal-sheet").openModal();
 		});
+		
 	});
 	</script>
 </body>
