@@ -73,7 +73,7 @@ TrackboxGoals.prototype._getDigitLatLon = function(digit) {
 
 TrackboxGoals.prototype._addPoint = function(name, lat, lon, noshow) {
 	this._goals[name] = true;
-	window.location.hash = Object.keys(this._goals).join(",");
+	this._updateHash();
 
 	var pos = new google.maps.LatLng(lat, lon);
 	var marker = new google.maps.Marker({
@@ -165,7 +165,13 @@ TrackboxGoals.prototype.deleteGoal = function(name) {
 		this._sheet.deleteRow(goal.sheet.sectionRowIndex);
 
 		delete this._goals[name];
+		this._updateHash();
 	}
+};
+
+
+TrackboxGoals.prototype._updateHash = function() {
+	window.location.hash = Object.keys(this._goals).join(",");
 };
 
 TrackboxGoals.prototype._initGoals = function(hash) {
