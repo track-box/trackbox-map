@@ -34,18 +34,6 @@ TrackboxWaypoint.prototype.showWaypoints = function() {
 	var markers = [];
 
 	Object.keys(waypoints).forEach(function(key){
-		var marker = new google.maps.Marker({
-			position: new google.maps.LatLng(waypoints[key].lat, waypoints[key].lon),
-			icon: {
-				path: google.maps.SymbolPath.CIRCLE,
-				scale: 3,
-				strokeWeight: 2,
-				strokeColor: '#e91e63' // material pink
-			},
-			label: key,
-			title: key
-		});
-
 		var pos = new google.maps.LatLng(waypoints[key].lat, waypoints[key].lon);
 		markers.push(new TrackboxGoal(key, pos, self.map));
 	});
