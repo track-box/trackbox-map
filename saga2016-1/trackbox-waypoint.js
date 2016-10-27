@@ -105,7 +105,7 @@ TrackboxGoal.prototype.onAdd = function() {
 	var lon = this._pos.lng();
         var comment = this._comment;
 	this._div.onclick = function () {
-		$("#waypoint-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span><span style="margin-left: 20px;">' + comment + '</span>');
+		$("#waypoint-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span><span style="margin-left: 10px;">' + comment + '</span>');
 		$("#waypoint-info-add").attr("name", name);
 		$("#waypoint-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
 		$("#waypoint-info").openModal();	
