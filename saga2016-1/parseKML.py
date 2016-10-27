@@ -66,7 +66,7 @@ if __name__ == '__main__':
         'waypoints': goals
     }
 
-    f = open('waypoint2.json', 'w')
+    f = open('waypoint.json', 'w')
     text = json.dumps(data, ensure_ascii=False)
     f.write(text.encode("utf-8"))
     f.close()
