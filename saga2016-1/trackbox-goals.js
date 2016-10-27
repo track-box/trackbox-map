@@ -39,7 +39,7 @@ TrackboxGoals.prototype.addGoal = function(x, noshow) {
 	if (x.length == 3){
 		if (this._waypoint.data.waypoints[x]){
 			var w = this._waypoint.data.waypoints[x];
-			this._addPoint(x, w.lat, w.lon, noshow);
+			this._addPoint(x, w.lat, w.lon, noshow, comment);
 
 		}else{
 			Materialize.toast("not found", 1000);
@@ -86,7 +86,7 @@ TrackboxGoals.prototype._getDigit = function(lat, lon) {
 	return "" + dx + dy;
 };
 
-TrackboxGoals.prototype._addPoint = function(name, lat, lon, noshow) {
+TrackboxGoals.prototype._addPoint = function(name, lat, lon, noshow, comment) {
 	this._goals[name] = true;
 	this._updateHash();
 
@@ -122,8 +122,10 @@ TrackboxGoals.prototype._addPoint = function(name, lat, lon, noshow) {
 		pos: pos,
 		marker: marker,
 		table: row1,
-		sheet: row2	
+		sheet: row2
 	};
+
+        if (comment) this._goals[name].comment = comment;
 
 	this.updatePosition();
 };
@@ -134,7 +136,8 @@ TrackboxGoals.prototype._showMarkerInfo = function(name) {
 		var goal = this._goals[name];
 		var lat = goal.pos.lat();
 		var lon = goal.pos.lng();
-		$("#marker-info-name").text(name);
+
+		$("#marker-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span><span style="margin-left: 10px;">' + comment + '</span>');
 		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
 		$("#marker-info").openModal();
 	}
@@ -211,4 +214,3 @@ TrackboxGoals.prototype._initGoals = function(hash) {
 		}
 	};
 };
-
