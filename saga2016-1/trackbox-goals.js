@@ -136,8 +136,11 @@ TrackboxGoals.prototype._showMarkerInfo = function(name) {
 		var goal = this._goals[name];
 		var lat = goal.pos.lat();
 		var lon = goal.pos.lng();
+                if (goal.comment) {
+		    $("#marker-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span><span style="margin-left: 10px;">' + goal.comment + '</span>');
+                }else{
 
-		$("#marker-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span><span style="margin-left: 10px;">' + comment + '</span>');
+  		$("#waypoint-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span>');              }
 		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
 		$("#marker-info").openModal();
 	}
