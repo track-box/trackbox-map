@@ -39,7 +39,7 @@ TrackboxGoals.prototype.addGoal = function(x, noshow) {
 	if (x.length == 3){
 		if (this._waypoint.data.waypoints[x]){
 			var w = this._waypoint.data.waypoints[x];
-			this._addPoint(x, w.lat, w.lon, noshow, comment);
+			this._addPoint(x, w.lat, w.lon, noshow, w.comment);
 
 		}else{
 			Materialize.toast("not found", 1000);
