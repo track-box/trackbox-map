@@ -27,8 +27,8 @@ if __name__ == '__main__':
         name_comment = ''
         rank = ''
 
-        lat = coords[0]
-        lon = coords[1]
+        lat = coords[1]
+        lon = coords[0]
 
         name_num = name[0:3]
         if len(name) > 3:
