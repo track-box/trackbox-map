@@ -140,7 +140,7 @@ TrackboxGoals.prototype._showMarkerInfo = function(name) {
 		    $("#marker-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span><span style="margin-left: 10px;">' + goal.comment + '</span>');
                 }else{
 
-  		$("#waypoint-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span>');              }
+  		$("#marker-info-name").html('<span style="font-size: 20px; margin: 6px; padding: 0;">' + name + '</span>');              }
 		$("#marker-info-href").attr("href", "http://maps.google.com/maps?q="+ lat +","+ lon);
 		$("#marker-info").openModal();
 	}
