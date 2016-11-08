@@ -152,10 +152,10 @@ TrackboxMap.prototype._setOverlayControl = function() {
 
 TrackboxMap.prototype._toggle = function() {
 	if (this._show){
-		this._waypoint.showZoomgt(12);
+		if (this._waypoint) this._waypoint.showZoomgt(12);
 		this.map.overlayMapTypes.removeAt(0);
 	}else{
-		this._waypoint.showZoomgt(15);
+		if (this._waypoint) this._waypoint.showZoomgt(15);
 		this.map.overlayMapTypes.insertAt(0, this);
 	}
 	this._show = !this._show;
