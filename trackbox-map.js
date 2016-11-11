@@ -28,27 +28,24 @@ function TrackboxMap(def, div_id) {
 TrackboxMap.prototype._initGoogleMaps = function(div_id) {
 	this._mapDiv = document.getElementById(div_id);
 	var map_canvas = document.createElement('div');
-
-	if (this._retina) {
-		map_canvas.style.width = '200%';
-		map_canvas.style.height = '200%';
-		map_canvas.style.transform = 'scale(0.5) translate(-50%, -50%)';
-
-	}else{
-		map_canvas.style.width = '100%';
-		map_canvas.style.height = '100%';
-	}
-
+	map_canvas.style.width = '100%';
+	map_canvas.style.height = '100%';
 	this._mapDiv.appendChild(map_canvas);
 
+	var mapTypeId = (this._retina) ? 'RetinaSatellite' : google.maps.MapTypeId.SATELLITE;
+
 	var map = new google.maps.Map(map_canvas, {
-		mapTypeId: google.maps.MapTypeId.SATELLITE,
+		mapTypeId: mapTypeId,
 		center: new google.maps.LatLng(this._def.center[0], this._def.center[1]),
 		zoom: 12,
 		mapTypeControl: false,
 		zoomControl: false,
 		streetViewControl: false
 	});
+
+	if (this._retina){
+		map.mapTypes.set('RetinaSatellite', new TrackboxMapSatellite());
+	}
 
 	return map;
 };
@@ -70,22 +67,54 @@ TrackboxMap.prototype.getTile = function(coord, zoom, owner) {
 
 	if (tileBounds.intersects(this._tileBounds)){
 		if (zoom >= this._def.zoom.min && zoom <= this._def.zoom.max){
+			if (this._retina && zoom < this._def.zoom.max){
+				var tile = owner.createElement('div');
+				tile.style.width = this.tileSize.width + 'px';
+				tile.style.height = this.tileSize.height + 'px';
 
-			var tile = owner.createElement('img');
-			tile.alt = '';
+				this._createRetinaTile(tile, coord, zoom + 1, 0, 0);
+				this._createRetinaTile(tile, coord, zoom + 1, 0, 1);
+				this._createRetinaTile(tile, coord, zoom + 1, 1, 0);
+				this._createRetinaTile(tile, coord, zoom + 1, 1, 1);
 
-			tile.src = this._getTileUrl(coord, zoom);
-			tile.style.width = this.tileSize.width + 'px';
-			tile.style.height = this.tileSize.height + 'px';
+				return tile;				
 
-			return tile;
+			}else{
+				var tile = owner.createElement('img');
+				tile.alt = '';
+
+				tile.src = this._getTileUrl(coord, zoom);
+				tile.style.width = this.tileSize.width + 'px';
+				tile.style.height = this.tileSize.height + 'px';
+
+				return tile;
+			}
 		}
 	}
-	
+
 	var tile = owner.createElement('img');
 	tile.alt = '';
 	return tile;
 };
+
+
+TrackboxMap.prototype._createRetinaTile = function(tile, coord, zoom, px, py) {
+	var coord1 = { x: coord.x * 2 + px, y: coord.y * 2 + py };
+	var tileBounds = this._tileCoordsToBounds(coord1, zoom);
+
+	if (tileBounds.intersects(this._tileBounds)){
+		var tile1 = document.createElement('img');
+		tile1.src = this._getTileUrl(coord1, zoom);
+		tile1.style.width = (this.tileSize.width / 2) + 'px';
+		tile1.style.height = (this.tileSize.height / 2) + 'px';
+		tile1.style.position = 'absolute';
+		tile1.style.top = (this.tileSize.width / 2 * py) + 'px';
+		tile1.style.left = (this.tileSize.height / 2 * px) + 'px';
+
+		tile.appendChild(tile1);
+	}
+};
+
 
 
 TrackboxMap.prototype._getTileUrl = function(coord, zoom) {
@@ -205,8 +234,78 @@ TrackboxMap.prototype._showCurrentPosition = function(pos) {
 	}
 };
 
-TrackboxLongTouch.prototype = new google.maps.OverlayView();
+/**
+ * @constructor
+ * @implements {google.maps.MapType}
+ */
+function TrackboxMapSatellite() {
+	this._retina = true;
+}
 
+TrackboxMapSatellite.prototype.tileSize = new google.maps.Size(256, 256);
+TrackboxMapSatellite.prototype.maxZoom = 20;
+TrackboxMapSatellite.prototype.name = 'Satellite';
+TrackboxMapSatellite.prototype.alt = '';
+TrackboxMapSatellite.prototype._urlPrefix = 'https://khm1.googleapis.com/kh?v=703&';
+
+
+TrackboxMapSatellite.prototype._getTileUrl = function(coord, zoom) {
+	return this._urlPrefix + 'x=' + coord.x + '&y=' + coord.y + '&z=' + zoom;
+};
+
+
+TrackboxMapSatellite.prototype.getTile = function(coord, zoom, owner) {
+
+	if (zoom <= this.maxZoom){
+		if (this._retina && zoom < this.maxZoom){
+			var tile = owner.createElement('div');
+			tile.style.width = this.tileSize.width + 'px';
+			tile.style.height = this.tileSize.height + 'px';
+
+			this._createRetinaTile(tile, coord, zoom + 1, 0, 0);
+			this._createRetinaTile(tile, coord, zoom + 1, 0, 1);
+			this._createRetinaTile(tile, coord, zoom + 1, 1, 0);
+			this._createRetinaTile(tile, coord, zoom + 1, 1, 1);
+
+			return tile;				
+
+		}else{
+			var tile = owner.createElement('img');
+			tile.alt = '';
+
+			tile.src = this._getTileUrl(coord, zoom);
+			tile.style.width = this.tileSize.width + 'px';
+			tile.style.height = this.tileSize.height + 'px';
+
+			return tile;
+		}
+	}
+
+	var tile = owner.createElement('img');
+	tile.alt = '';
+	return tile;
+};
+
+
+TrackboxMapSatellite.prototype._createRetinaTile = function(tile, coord, zoom, px, py) {
+	var coord1 = { x: coord.x * 2 + px, y: coord.y * 2 + py };
+
+	var tile1 = document.createElement('img');
+	tile1.src = this._getTileUrl(coord1, zoom);
+	tile1.style.width = (this.tileSize.width / 2) + 'px';
+	tile1.style.height = (this.tileSize.height / 2) + 'px';
+	tile1.style.position = 'absolute';
+	tile1.style.top = (this.tileSize.width / 2 * py) + 'px';
+	tile1.style.left = (this.tileSize.height / 2 * px) + 'px';
+
+	tile.appendChild(tile1);
+};
+
+
+
+
+
+TrackboxLongTouch.prototype = new google.maps.OverlayView();
 
 function TrackboxLongTouch(map, goals) {
 	this.map = map;
