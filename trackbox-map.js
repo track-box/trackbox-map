@@ -154,6 +154,7 @@ TrackboxMap.prototype._setOverlayControl = function() {
 	controlUI.style.textAlign = 'center';
 	controlUI.style.color = 'rgb(25,25,25)';
 	controlUI.style.fontSize = '11px';
+	controlUI.style.fontFamily = 'Roboto,Arial,sans-serif';
 	controlUI.style.display = 'block';
 	controlUI.innerHTML = this._def.name;
 	
