@@ -7,34 +7,58 @@
  */
 
 /** @constructor */
-function TrackboxMap(def) {
+function TrackboxMap(def, div_id) {
 	this.tileSize = new google.maps.Size(256, 256);
 	this.maxZoom = 21;
-	this.name = def.name;
-	this.alt = '';
-
 	this._def = def;
+
+	// detect retina
+	this._retina = window.devicePixelRatio >= 2;
+
+	this.map = this._initGoogleMaps(div_id);
 
 	this._tileBounds = new google.maps.LatLngBounds(
 		new google.maps.LatLng(def.bounds[0][0], def.bounds[0][1]),
 		new google.maps.LatLng(def.bounds[1][0], def.bounds[1][1]));
 
-	this._retina = window.devicePixelRatio >= 2;
+	this.addTo();
 }
 
-TrackboxMap.prototype.addTo = function(map) {
-	this.map = map;
 
-	//map.fitBounds(this._tileBounds);
+TrackboxMap.prototype._initGoogleMaps = function(div_id) {
+	var map_canvas = document.getElementById(div_id);
 
+	if (this._retina) {
+		var inner = document.createElement('div');
+		inner.style.width = '200%';
+		inner.style.height = '200%';
+		inner.style.transform = 'scale(0.5) translate(-50%, -50%)';
+
+		map_canvas.appendChild(inner);
+		map_canvas = inner;
+	}
+
+	var map = new google.maps.Map(map_canvas, {
+		mapTypeId: google.maps.MapTypeId.SATELLITE,
+		center: new google.maps.LatLng(this._def.center[0], this._def.center[1]),
+		zoom: 12,
+		mapTypeControl: false,
+		zoomControl: false,
+		streetViewControl: false
+	});
+
+	return map;
+};
+
+TrackboxMap.prototype.addTo = function() {
 	this._setOverlayControl();
 
-	map.mapTypes.set(this._def.name, this);
-	//map.setMapTypeId(this._def.name);
-	map.overlayMapTypes.insertAt(0, this);
+	this.map.overlayMapTypes.insertAt(0, this);
 	this._show = true;
 
-	this._waypoint = new TrackboxWaypoint(this._def.waypoint_url, map);
+	if (this._def.waypoint_url){
+		this._waypoint = new TrackboxWaypoint(this._def.waypoint_url, map);
+	}
 };
 
 
@@ -44,28 +68,14 @@ TrackboxMap.prototype.getTile = function(coord, zoom, owner) {
 	if (tileBounds.intersects(this._tileBounds)){
 		if (zoom >= this._def.zoom.min && zoom <= this._def.zoom.max){
 
-			if (this._retina && zoom < this._def.zoom.max){
-				var tile = owner.createElement('div');
-				tile.style.width = this.tileSize.width + 'px';
-				tile.style.height = this.tileSize.height + 'px';
+			var tile = owner.createElement('img');
+			tile.alt = '';
 
-				this._createRetinaTile(tile, coord, zoom + 1, 0, 0);
-				this._createRetinaTile(tile, coord, zoom + 1, 0, 1);
-				this._createRetinaTile(tile, coord, zoom + 1, 1, 0);
-				this._createRetinaTile(tile, coord, zoom + 1, 1, 1);
+			tile.src = this._getTileUrl(coord, zoom);
+			tile.style.width = this.tileSize.width + 'px';
+			tile.style.height = this.tileSize.height + 'px';
 
-				return tile;				
-
-			}else{
-				var tile = owner.createElement('img');
-				tile.alt = '';
-
-				tile.src = this._getTileUrl(coord, zoom);
-				tile.style.width = this.tileSize.width + 'px';
-				tile.style.height = this.tileSize.height + 'px';
-
-				return tile;
-			}
+			return tile;
 		}
 	}
 	
@@ -74,23 +84,6 @@ TrackboxMap.prototype.getTile = function(coord, zoom, owner) {
 	return tile;
 };
 
-
-TrackboxMap.prototype._createRetinaTile = function(tile, coord, zoom, px, py) {
-	var coord1 = { x: coord.x * 2 + px, y: coord.y * 2 + py };
-	var tileBounds = this._tileCoordsToBounds(coord1, zoom);
-
-	if (tileBounds.intersects(this._tileBounds)){
-		var tile1 = document.createElement('img');
-		tile1.src = this._getTileUrl(coord1, zoom);
-		tile1.style.width = (this.tileSize.width / 2) + 'px';
-		tile1.style.height = (this.tileSize.height / 2) + 'px';
-		tile1.style.position = 'absolute';
-		tile1.style.top = (this.tileSize.width / 2 * py) + 'px';
-		tile1.style.left = (this.tileSize.height / 2 * px) + 'px';
-
-		tile.appendChild(tile1);
-	}
-};
 
 TrackboxMap.prototype._getTileUrl = function(coord, zoom) {
 	var y = (1 << zoom) - coord.y - 1;
@@ -126,7 +119,7 @@ TrackboxMap.prototype._setOverlayControl = function() {
 	controlUI.style.boxShadow = '0 1px 4px -1px rgba(0,0,0,.3)';
 	controlUI.style.cursor = 'pointer';
 	controlUI.style.marginTop = '10px';
-	controlUI.style.marginLeft = '10px';
+	controlUI.style.marginRight = '10px';
 	controlUI.style.padding = '10px';
 	controlUI.style.textAlign = 'center';
 	controlUI.style.color = 'rgb(25,25,25)';
@@ -144,16 +137,16 @@ TrackboxMap.prototype._setOverlayControl = function() {
 		self._toggle();
 	});
 
-	this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(div);
+	this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(div);
 };
 
 
 TrackboxMap.prototype._toggle = function() {
 	if (this._show){
-		this._waypoint.showZoomgt(12);
+		if (this._waypoint) this._waypoint.showZoomgt(12);
 		this.map.overlayMapTypes.removeAt(0);
 	}else{
-		this._waypoint.showZoomgt(15);
+		if (this._waypoint) this._waypoint.showZoomgt(15);
 		this.map.overlayMapTypes.insertAt(0, this);
 	}
 	this._show = !this._show;
