@@ -26,17 +26,20 @@ function TrackboxMap(def, div_id) {
 
 
 TrackboxMap.prototype._initGoogleMaps = function(div_id) {
-	var map_canvas = document.getElementById(div_id);
+	this._mapDiv = document.getElementById(div_id);
+	var map_canvas = document.createElement('div');
 
 	if (this._retina) {
-		var inner = document.createElement('div');
-		inner.style.width = '200%';
-		inner.style.height = '200%';
-		inner.style.transform = 'scale(0.5) translate(-50%, -50%)';
+		map_canvas.style.width = '200%';
+		map_canvas.style.height = '200%';
+		map_canvas.style.transform = 'scale(0.5) translate(-50%, -50%)';
 
-		map_canvas.appendChild(inner);
-		map_canvas = inner;
+	}else{
+		map_canvas.style.width = '100%';
+		map_canvas.style.height = '100%';
 	}
+
+	this._mapDiv.appendChild(map_canvas);
 
 	var map = new google.maps.Map(map_canvas, {
 		mapTypeId: google.maps.MapTypeId.SATELLITE,
@@ -109,35 +112,28 @@ TrackboxMap.prototype._tileCoordsToBounds = function(coord, zoom) {
 
 
 TrackboxMap.prototype._setOverlayControl = function() {
-	var div = document.createElement('div');
-	div.index = 1;
-
 	var controlUI = document.createElement('div');
+	controlUI.style.position = 'absolute';
+	controlUI.style.top = '10px';
+	controlUI.style.right = '10px';
 	controlUI.style.backgroundColor = '#fff';
 	controlUI.style.border = '2px solid #fff';
 	controlUI.style.borderRadius = '2px';
 	controlUI.style.boxShadow = '0 1px 4px -1px rgba(0,0,0,.3)';
 	controlUI.style.cursor = 'pointer';
-	controlUI.style.marginTop = '10px';
-	controlUI.style.marginRight = '10px';
-	controlUI.style.padding = '10px';
+	controlUI.style.padding = '6px';
 	controlUI.style.textAlign = 'center';
 	controlUI.style.color = 'rgb(25,25,25)';
 	controlUI.style.fontSize = '11px';
-	controlUI.style.position = 'relative';
 	controlUI.style.display = 'block';
 	controlUI.innerHTML = this._def.name;
 	
-	if (this._retina) controlUI.style.padding = '9px 6px';
-
-	div.appendChild(controlUI);
-
 	var self = this;
 	controlUI.addEventListener('click', function() {
 		self._toggle();
 	});
 
-	this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(div);
+	this._mapDiv.appendChild(controlUI);
 };
 
 
