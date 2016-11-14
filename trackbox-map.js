@@ -186,11 +186,11 @@ TrackboxMap.prototype.setTitle = function(title) {
 TrackboxMap.prototype._toggle = function() {
 	if (this._show){
 		if (this._waypoint) this._waypoint.showZoomgt(12);
-		if (this._titleDiv) this._titleDiv.color = "#fff";
+		if (this._titleDiv) this._titleDiv.style.color = "#fff";
 		this.map.overlayMapTypes.removeAt(0);
 	}else{
 		if (this._waypoint) this._waypoint.showZoomgt(15);
-		if (this._titleDiv) this._titleDiv.color = "#212121";
+		if (this._titleDiv) this._titleDiv.style.color = "#212121";
 		this.map.overlayMapTypes.insertAt(0, this);
 	}
 	this._show = !this._show;
