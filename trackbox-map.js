@@ -166,13 +166,31 @@ TrackboxMap.prototype._setOverlayControl = function() {
 	this._mapDiv.appendChild(controlUI);
 };
 
+TrackboxMap.prototype.setTitle = function(title) {
+	this._title = title;
+
+	var titleDiv = document.createElement('div');
+	titleDiv.style.position = 'absolute';
+	titleDiv.style.top = '28px';
+	titleDiv.style.left = '75px';
+	titleDiv.style.color = '#212121';
+	titleDiv.style.fontSize = '18px';
+	titleDiv.style.fontFamily = 'Roboto,Arial,sans-serif';
+	titleDiv.innerHTML = title;
+
+	this._titleDiv = titleDiv;	
+	this._mapDiv.appendChild(titleDiv);
+};
+
 
 TrackboxMap.prototype._toggle = function() {
 	if (this._show){
 		if (this._waypoint) this._waypoint.showZoomgt(12);
+		if (this._titleDiv) this._titleDiv.color = "#fff";
 		this.map.overlayMapTypes.removeAt(0);
 	}else{
 		if (this._waypoint) this._waypoint.showZoomgt(15);
+		if (this._titleDiv) this._titleDiv.color = "#212121";
 		this.map.overlayMapTypes.insertAt(0, this);
 	}
 	this._show = !this._show;
