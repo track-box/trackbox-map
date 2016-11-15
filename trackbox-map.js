@@ -176,19 +176,19 @@ TrackboxMap.prototype._setOverlayControl = function() {
 };
 
 TrackboxMap.prototype.setTitle = function(title) {
-	this._title = title;
+	if (!this._titleDiv) {
+		var titleDiv = document.createElement('div');
+		titleDiv.style.position = 'absolute';
+		titleDiv.style.top = '28px';
+		titleDiv.style.left = '75px';
+		titleDiv.style.color = (this._overlay) ? '#212121' : '#fff';
+		titleDiv.style.fontSize = '18px';
+		titleDiv.style.fontFamily = 'Roboto,Arial,sans-serif';
+		this._titleDiv = titleDiv;	
+		this._mapDiv.appendChild(titleDiv);
+	}
 
-	var titleDiv = document.createElement('div');
-	titleDiv.style.position = 'absolute';
-	titleDiv.style.top = '28px';
-	titleDiv.style.left = '75px';
-	titleDiv.style.color = '#212121';
-	titleDiv.style.fontSize = '18px';
-	titleDiv.style.fontFamily = 'Roboto,Arial,sans-serif';
-	titleDiv.innerHTML = title;
-
-	this._titleDiv = titleDiv;	
-	this._mapDiv.appendChild(titleDiv);
+	this._titleDiv.innerHTML = title;
 };
 
 
