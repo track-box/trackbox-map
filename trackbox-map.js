@@ -10,7 +10,6 @@
 function TrackboxMap(def, div_id) {
 	this.tileSize = new google.maps.Size(256, 256);
 	this.maxZoom = 21;
-	this._def = def;
 
 	this._showWaypoints = false; //TODO
 
@@ -19,6 +18,12 @@ function TrackboxMap(def, div_id) {
 
 	this.map = this._initGoogleMaps(div_id);
 
+	if (def) this.setMapDef(def);
+}
+
+TrackboxMap.prototype.setMapDef = function(def) {
+	this._def = def;
+
 	if (this._def.url && this._def.bounds){
 		this._overlay = true;
 		this._tileBounds = new google.maps.LatLngBounds(
@@ -26,8 +31,7 @@ function TrackboxMap(def, div_id) {
 			new google.maps.LatLng(def.bounds[1][0], def.bounds[1][1]));
 		this.addOverlay();
 	}
-}
-
+};
 
 TrackboxMap.prototype._initGoogleMaps = function(div_id) {
 	this._mapDiv = document.getElementById(div_id);
@@ -38,8 +42,8 @@ TrackboxMap.prototype._initGoogleMaps = function(div_id) {
 
 	var mapTypeId = (this._retina) ? 'RetinaSatellite' : google.maps.MapTypeId.SATELLITE;
 
-	var zoom = (this._def.center) ? 12 : 5;
-	var center = (this._def.center) ? 
+	var zoom = (this._def) ? 12 : 5;
+	var center = (this._def) ? 
 		new google.maps.LatLng(this._def.center[0], this._def.center[1]) :
 		new google.maps.LatLng(36.204824, 138.252924);
 
