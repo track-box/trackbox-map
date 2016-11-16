@@ -1,0 +1,15 @@
+{
+	"name": "Ichinoseki2016",
+	"center": [38.934005, 141.158267],
+	"bounds": [[38.6130359862, 140.8694187], [39.1999306616, 141.516805776]],
+	"zoom": { "min": 5, "max": 15 },
+	"utm": {
+		"zone": 54,
+		"xmin": 488724,
+		"xmax": 544624,
+		"ymin": 4273962,
+		"ymax": 4338963
+	},
+	"url": "https://d128cdxvkxdfwx.cloudfront.net/map/ichinoseki2016",
+	"waypoint_url": "https://track-box.github.io/trackbox-map/ichinoseki2016/waypoint.json"
+}
