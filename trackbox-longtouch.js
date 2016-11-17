@@ -23,6 +23,8 @@ TrackboxLongTouch.prototype._initEvents = function(div_id) {
 	div.addEventListener("touchend", function (e){ self._eventStop(e) });
 	div.addEventListener("mouceup", function (e){ self._eventStop(e) });
 	div.addEventListener("mouceout", function (e){ self._eventStop(e) });
+	
+	this.map.addListener('drag', function (){ self._eventStop() });
 };
 
 
