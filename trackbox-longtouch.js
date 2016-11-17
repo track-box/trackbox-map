@@ -21,8 +21,8 @@ TrackboxLongTouch.prototype._initEvents = function(div_id) {
 	div.addEventListener("mousedown", function (e){ self._eventStart(e) });
 
 	div.addEventListener("touchend", function (e){ self._eventStop(e) });
-	div.addEventListener("mouceup", function (e){ self._eventStop(e) });
-	div.addEventListener("mouceout", function (e){ self._eventStop(e) });
+	div.addEventListener("mouseup", function (e){ self._eventStop(e) });
+	div.addEventListener("mouseout", function (e){ self._eventStop(e) });
 	
 	this.map.addListener('drag', function (){ self._eventStop() });
 };
@@ -54,7 +54,7 @@ TrackboxLongTouch.prototype._eventStart = function(e) {
 };
 
 TrackboxLongTouch.prototype._eventStop = function(e) {
-	if (this._touched){
+	if (document.interval){
 		clearInterval(document.interval);
 	}
 	this._touched = false;
