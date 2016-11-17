@@ -152,6 +152,16 @@ TrackboxMap.prototype._tileCoordsToBounds = function(coord, zoom) {
 	return new google.maps.LatLngBounds(sw, ne);
 };
 
+TrackboxMap.prototype.removeOverlay = function() {
+	if (this._show){
+		if (this._titleDiv) this._titleDiv.style.color = "#fff";
+		this.map.overlayMapTypes.removeAt(0);
+		this._show = false;
+	}
+
+	this._controlUI.parentNode.removeChild(this._controlUI);
+	this._controlUI = null;
+};
 
 TrackboxMap.prototype._setOverlayControl = function() {
 	var controlUI = document.createElement('div');
@@ -176,6 +186,7 @@ TrackboxMap.prototype._setOverlayControl = function() {
 		self._toggle();
 	});
 
+	this._controlUI = controlUI;
 	this._mapDiv.appendChild(controlUI);
 };
 
