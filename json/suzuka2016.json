@@ -1,0 +1,15 @@
+{
+	"name": "Suzuka2016",
+	"center": [34.884255, 136.530583],
+	"bounds": [[34.64856419321580, 136.32401408639996], [35.01820185150547, 136.68759634821404]],
+	"zoom": { "min": 5, "max": 15 },
+	"utm": {
+		"zone": 53,
+		"xmin": 621330,
+		"xmax": 653978,
+		"ymin": 3835355,
+		"ymax": 3875869
+	},
+	"url": "https://d128cdxvkxdfwx.cloudfront.net/map/suzuka2016",
+	"waypoint_url": "https://track-box.github.io/trackbox-map/suzuka2016/waypoint.json"
+}
