@@ -1,0 +1,15 @@
+{
+	"name": "2016",
+	"center": [],
+	"bounds": [[], []],
+	"zoom": { "min": 5, "max": 15 },
+	"utm": {
+		"zone": 54,
+		"xmin": ,
+		"xmax": ,
+		"ymin": ,
+		"ymax": 
+	},
+	"url": "https://d128cdxvkxdfwx.cloudfront.net/map/saga2016",
+	"waypoint_url": "https://track-box.github.io/trackbox-map/saga2016/waypoint.json"
+}
