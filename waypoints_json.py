@@ -1,3 +1,7 @@
+"""
+UTM goallist.txt to waypoint.json
+"""
+
 import os, sys
 import csv
 import json
