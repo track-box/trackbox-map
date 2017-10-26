@@ -159,8 +159,10 @@ TrackboxMap.prototype.removeOverlay = function() {
 		this._show = false;
 	}
 
-	this._controlUI.parentNode.removeChild(this._controlUI);
-	this._controlUI = null;
+	if (this._controlUI){
+		this._controlUI.parentNode.removeChild(this._controlUI);
+		this._controlUI = null;
+	}
 };
 
 TrackboxMap.prototype._setOverlayControl = function() {

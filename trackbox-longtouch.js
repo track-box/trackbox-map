@@ -24,7 +24,7 @@ TrackboxLongTouch.prototype._initEvents = function(div_id) {
 	div.addEventListener("mouseup", function (e){ self._eventStop(e) });
 	div.addEventListener("mouseout", function (e){ self._eventStop(e) });
 	
-	this.map.addListener('drag', function (){ self._eventStop() });
+	this.map.addListener('drag', function (e){ self._eventStop(e) });
 };
 
 
@@ -54,10 +54,14 @@ TrackboxLongTouch.prototype._eventStart = function(e) {
 };
 
 TrackboxLongTouch.prototype._eventStop = function(e) {
-	if (document.interval){
+	if (this._touched){
 		clearInterval(document.interval);
 	}
-	this._touched = false;
+
+	var self = this;
+	setTimeout(function(){
+		self._touched = false;
+	}, 200);
 };
 
 TrackboxLongTouch.prototype._getLatLng = function(x, y) {
@@ -75,11 +79,17 @@ TrackboxLongTouch.prototype.show = function(x, y) {
 
 	var digit = this._goals._getDigit(lat, lng);
 
+	var self = this;
 	this._onShow({
 		name: digit,
 		lat: lat,
 		lng: lng,
-		onClose: function (){ marker.setMap(null); }
+		onClose: function (){
+			if (!self._touched){
+				marker.setMap(null);
+				return true;
+			}
+		}
 	});
 };
 
