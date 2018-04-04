@@ -1,0 +1,15 @@
+{
+	"name": "Watarase2018",
+	"center": [36.253385, 139.654648],
+	"bounds": [[36.01784028600451, 139.41489603691292], [36.40302007139104, 140.04278592893888]],
+	"zoom": { "min": 5, "max": 15 },
+	"utm": {
+		"zone": 54,
+		"xmin": 357851,
+		"xmax": 413751,
+		"ymin": 3987078,
+		"ymax": 4029080
+	},
+	"url": "https://d128cdxvkxdfwx.cloudfront.net/map/watarase2018",
+	"waypoint_url": "https://track-box.github.io/trackbox-map/watarase2016/waypoint.json"
+}
