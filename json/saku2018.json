@@ -1,0 +1,15 @@
+{
+	"name": "Saku2018",
+	"center": [36.248903, 138.431646],
+	"bounds": [[36.12812348973043, 138.13960175292476], [36.40898119185815, 138.63800589698590]],
+	"zoom": { "min": 5, "max": 15 },
+	"utm": {
+		"zone": 54,
+		"xmin": 243469,
+		"xmax": 287473,
+		"ymin": 4001921,
+		"ymax": 4031921
+	},
+	"url": "https://d128cdxvkxdfwx.cloudfront.net/map/saku2018",
+	"waypoint_url": "https://track-box.github.io/trackbox-map/saku2018/waypoint.json"
+}
