@@ -83,7 +83,11 @@ TrackboxGoals.prototype._getDigit = function(lat, lon) {
 	var dx = x % 10000;
 	var dy = y % 10000;
 
-	return "" + dx + dy;
+	return "" + this._pad4(dx) + this._pad4(dy);
+};
+
+TrackboxGoals.prototype._pad4 = function(x) {
+    return ('0000' + x).slice(-4);
 };
 
 TrackboxGoals.prototype._addPoint = function(name, lat, lon, noshow) {
