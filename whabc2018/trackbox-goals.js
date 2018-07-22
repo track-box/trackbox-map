@@ -201,18 +201,27 @@ TrackboxGoals.prototype._updateHash = function() {
 
 TrackboxGoals.prototype._initGoals = function(hash) {
 	var goals = hash.substr(1).split(",");
-	var self = this;
-	this._waypoint._onloadForGoals = function (){
-		
-		if (goals.length > 1){
-			for (var i in goals){
-				self.addGoal(goals[i], true);
-			}
 
-		}else{
-			self.addGoal(goals[0]);
-			self._showMarkerInfo(goals[0]);
-		}
-	};
+    if (this._waypoint){
+        var self = this;
+	    this._waypoint._onloadForGoals = function (){
+            self._initAddGoals(goals);
+        };
+
+    }else{
+        this._initAddGoals(goals);
+    }
+};	
+
+TrackboxGoals.prototype._initAddGoals = function(goals) {
+    if (goals.length > 1){
+        for (var i in goals){
+            this.addGoal(goals[i], true);
+        }
+
+    }else{
+        this.addGoal(goals[0]);
+        this._showMarkerInfo(goals[0]);
+    }
 };
 
