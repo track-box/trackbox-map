@@ -1,0 +1,15 @@
+{
+	"name": "WHABC2018",
+	"center": [48.79327, 15.40432],
+	"bounds": [[48.562116, 14.986338], [48.996378, 15.683979]],
+	"zoom": { "min": 5, "max": 15 },
+	"utm": {
+		"zone": 33,
+		"xmin": 499000,
+		"xmax": 550033,
+		"ymin": 5379002,
+		"ymax": 5427053
+	},
+	"url": "https://d128cdxvkxdfwx.cloudfront.net/map/whabc2018",
+	"waypoint_url": ""
+}
