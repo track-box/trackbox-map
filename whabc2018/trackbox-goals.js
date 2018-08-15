@@ -36,7 +36,7 @@ TrackboxGoals.prototype.addGoal = function(x, noshow) {
 		return;
 	}
 
-	if (x.length == 3){
+	if (x.length == 3 || x.length == 4){
 		if (this._waypoint.data.waypoints[x]){
 			var w = this._waypoint.data.waypoints[x];
 			this._addPoint(x, w.lat, w.lon, noshow);
